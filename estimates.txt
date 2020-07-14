@@ -1,0 +1,23 @@
+Availability Estimate
+
+1. Minimum RTO for a single AZ outage
+- Incident happens
+- CloudWatch triggers an alarm after some period of time: approx 5 minutes
+- Because of multi-AZ configuration, automatically switch to another AZ where all required resources provisioned and running: less than 5 minutes
+=> Minimum RTO can be around 10 minutes 
+
+2. Minimum RTO for a single region outage
+- Incident happens
+- CloudWatch triggers an alarm and push an on-call messages: approx 5 minutes
+- On-call staff need some time to get prepared (get out of bed, get to a laptop, connect to VPN): 10 minutes
+- On-call staff starts diagnosing the issue: 15 minutes
+- Root cause is discovered: 10 minutes
+- Remediation started (ex. promote read-replica): 10 minutes
+- issue fixed: 10 minutes
+=> Minimum ROT can be around 60 minutes
+
+3. Minimum RPO for a single AZ outage
+- Because of automated backups and 5-minute transaction logs captures, data that would be lost is 5 minutes. 
+
+4. Minimum RPO for a single region outage
+- Multi-region deployment, we could have multi read-replica. Because of replica lag, RPO can not be zero but very small. Lets say 1 minute.
