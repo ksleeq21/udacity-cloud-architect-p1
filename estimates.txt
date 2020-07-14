@@ -6,6 +6,7 @@ Availability Estimate
 - Because of multi-AZ configuration, automatically switch to another AZ where all required resources provisioned and running: less than 5 minutes
 => Minimum RTO can be around 10 minutes 
 
+
 2. Minimum RTO for a single region outage
 - Incident happens
 - CloudWatch triggers an alarm and push an on-call messages: approx 5 minutes
@@ -14,10 +15,25 @@ Availability Estimate
 - Root cause is discovered: 10 minutes
 - Remediation started (ex. promote read-replica): 10 minutes
 - issue fixed: 10 minutes
-=> Minimum ROT can be around 60 minutes
+=> Minimum RTO can be around 60 minutes
+
 
 3. Minimum RPO for a single AZ outage
-- Because of automated backups and 5-minute transaction logs captures, data that would be lost is 5 minutes. 
+- Incident happens (data loss started)
+- Applications stop working (data loss stopped): approx 5 minutes
+- AWS notices an incident and CloudWatch triggers an alarm and pushes on-call message: approx 5 minutes
+- On-call staff restore service: 20 minutes
+=> Minimum RPO would be around 5 minutes 
+because data loss stopped after 5 minutes since the incident 
+and automated backups and 5-minute transaction logs captures existed for recovery.
+
 
 4. Minimum RPO for a single region outage
-- Multi-region deployment, we could have multi read-replica. Because of replica lag, RPO can not be zero but very small. Lets say 1 minute.
+- Incident happens (data loss started)
+- Applications stop working (data loss stopped): approx 5 minutes
+- AWS notices an incident and CloudWatch triggers an alarm and pushes on-call message: approx 5 minutes
+- On-call staff needs some time to get prepared: 10 minutes
+- On-call staff starts remediation: 10 minutes 
+- Promote read-replicas into fully functional primary DB: 10 minutes
+- Traffic rerouting started: 5 minutes
+=> Minimum RPO would be around 5 minutes
